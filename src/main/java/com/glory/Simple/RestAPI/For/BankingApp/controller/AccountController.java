@@ -4,11 +4,14 @@ package com.glory.Simple.RestAPI.For.BankingApp.controller;
 import com.glory.Simple.RestAPI.For.BankingApp.dto.AccountDto;
 import com.glory.Simple.RestAPI.For.BankingApp.service.AccountService;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,5 +38,13 @@ public class AccountController {
         AccountDto accountDto = accountService.getAccountById(accountId);
         return ResponseEntity.ok(accountDto);
     }
+
+    // Depositing REST API
+    @PutMapping("/{id}/deposit")
+    public ResponseEntity<AccountDto> depositAmount(@PathVariable Long id, @RequestBody Map<String, Double> request){
+        Double amount = request.get("amount");
+        AccountDto accountDto = accountService.depositAmount(id, amount);
+        return ResponseEntity.ok(accountDto);
+ }
 
 }

@@ -33,4 +33,20 @@ public class AccountServiceImpl implements AccountService{
 
 }
 
+    @Override
+    public AccountDto depositAmount(Long id, double amount) {
+        // crating an account for the above parameter Long id
+       Account account =  accountRepository.findById(id)
+       .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+       // Next is to call its getBalance method to get the current balance, and the add(+) the amount to the existing balance
+       double totalBalance = account.getAccountBalance() + amount;
+       account.setAccountBalance(totalBalance);
+       Account savedAccount = accountRepository.save(account);
+       return AccountMapper.mapJpaEntityToAccountDto(savedAccount);
+
+       /** The above logic is to get the existing balance from the account and add the new amount to it
+        */
+    }
+
 }
