@@ -11,9 +11,13 @@ public class AccountMapper {
         // Crating object of account entity
         Account account = new Account(
             // passing the dto values to account entity constructor
-            accountDto.getId(),
-            accountDto.getAccountHolderName(),
-            accountDto.getAccountBalance()
+            // accountDto.getId(),
+            // accountDto.getAccountHolderName(),
+            // accountDto.getAccountBalance()
+
+            accountDto.id(),
+            accountDto.accountHolderName(),
+            accountDto.accountBalance()
         );
 
             // then returning the account entity object

@@ -6,4 +6,7 @@ import com.glory.Simple.RestAPI.For.BankingApp.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long>{
 
+   // void saveAccount(Account account);
+
+   
 }

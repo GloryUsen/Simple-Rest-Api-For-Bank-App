@@ -1,5 +1,8 @@
 package com.glory.Simple.RestAPI.For.BankingApp.servicImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.glory.Simple.RestAPI.For.BankingApp.dto.AccountDto;
@@ -49,4 +52,54 @@ public class AccountServiceImpl implements AccountService{
         */
     }
 
+    @Override
+    public AccountDto withdrawAmount(Long id, double amount) {
+
+        // Check
+  
+        // First, check if the account with the given id exist in the db. if not exist, throw an exception, like account not exist
+
+        Account account = accountRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+        // Next, if the withdrawal amount is greater than the balance, then throw an exception like insufficient amount.
+        if(account.getAccountBalance() < amount ){
+            throw new RuntimeException("Insuffient amount");
+        }
+
+        // Logic
+        double total = account.getAccountBalance() - amount;
+        account.setAccountBalance(total);
+        Account savedAccount = accountRepository.save(account);
+
+        // Converting Account Entity into Account Dto
+
+        return AccountMapper.mapJpaEntityToAccountDto(savedAccount);
+
+    }
+
+    @Override
+    public List<AccountDto> getAllAccounts() {
+     
+        List<Account> accounts = accountRepository.findAll();
+
+        // Converting the list of account into list of account DTO
+        
+        return accounts.stream().map((account) -> AccountMapper.mapJpaEntityToAccountDto(account))
+        .collect(Collectors.toList());
+        
+   
+
+}
+
+    @Override
+    public void deleteAccount(Long id) {
+         Account account = accountRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+        accountRepository.deleteById(id);
+
+     
+
+    }
 }
